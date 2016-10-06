@@ -4,11 +4,11 @@
 
 * What is version control?  Why is it useful?
 
-Version control is the tracking of changes for a code/file/folder through a logging of the data's statuses. It's useful to be able to see when and where changes were made in the data in order to resolve possible bugs that occurred as a result of those changes. 
+Version control is the tracking and organizing of changes for a code/file/folder through a logging of the data's statuses. It's useful to be able to see when and where changes were made in the data in order to resolve possible bugs that occurred as a result of those changes. 
 
 * What is a branch and why would you use one?
 
-A branch is a temporary copy of your data that allows you to work in an environment that doesn't affect the original data. Branches are used to allow multiple users to work on a code and if the changes were deemed helpful or wanted can be merged back into the original data.
+A branch is a temporary pointer to your data that allows you to work in an environment that doesn't affect the original data. When a new commit occurs the temporary branch breaks away from the master. Branches are used to allow multiple users to work on a code or a single user to work on different parts of the code and if the changes were deemed helpful or wanted can be merged back into the original data.
 
 * What is a commit? What makes a good commit message?
 

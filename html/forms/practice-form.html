@@ -4,6 +4,40 @@
   <title>Practice Form</title>
 </head>
 <body>
+<form action="success.html" method="post">
+  <div>
+    <label>Choose a winner:</label>
+    <select>
+      <option value = "Tatiana">Tatiana</option>
+      <option value = "Ian">Ian</option>
+      <option value = "Some Loser">Some Loser</option>
+     </select>
+  </div>
+  <div>
+    <label>What did they win?:</label>
+    <input type="text" name="prize">
+  </div>
+  <div>
+    <label>What was the competition?:</label>
+    <input type="text" name="contest">
+  </div>
+  <div>
+    <label>What day did they win:</label>
+    <input type="date" name="date">
+  </div>
+  <div>
+    <label>What do you want to tell the winner?</label>
+    <br>
+    <textarea cols="50" rows="10" name="message"></textarea>
+  </div>
+  <fieldset>
+    <legend> Winner's Qualities </legend>
+          <p><label> <input type=checkbox name="Qualities" value="passion"> Passion </label></p>
+    <p><label> <input type=checkbox name="Qualities" value="kind">  Kind </label></p>
+    <p><label> <input type=checkbox name="Qualities" value="funny"> Funny </label></p>
 
+  </fieldset>
+  <button type="submit">Submit</button>
+</form>
 </body>
 </html>

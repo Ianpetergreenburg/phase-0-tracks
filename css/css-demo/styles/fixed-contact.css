@@ -24,6 +24,6 @@ section#contact-info p {
 to avoid the appearance of an extra
 border. */
 
-section#contact-info p:last-of-type {
+/*section#contact-info p:last-of-type {
   border-right: none;
-}
+}*/

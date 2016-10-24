@@ -1,0 +1,15 @@
+-Open Doors
+-Determine what floor you are currently at
+-take in floor destination number
+-Close Doors
+-If floor destination is above the current floor
+	-Until current flow is destination floor 
+		-move up one floor
+	-Then stop at destination floor
+-Else if floor destination is below the current floor
+	-Until current floor is destination floor
+		-move down one floor
+	-Then stop at destination floor
+-Otherwise
+	-Don’t change floors
+-Repeat method

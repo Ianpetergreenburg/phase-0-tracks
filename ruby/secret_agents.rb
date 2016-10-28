@@ -1,12 +1,5 @@
-Encrypt
-#take an argument to code
-#find out the length
-#traverse the length while moving one letter forward in alphabet
-#return the encrypted
-
 def encrypt(secret)
-password_length = secret.length - 1
-	for i in 0..password_length
+	for i in 0...secret.length
 		temp = secret[i]
 		if temp == "z"
 			temp = "a"
@@ -18,9 +11,24 @@ password_length = secret.length - 1
 return secret
 end
 
-Decrypt
-#input alphabet
-#take an argument to decode
-#find out the length
-#traverse the length while moving one letter backward in alphabet
-#return the unencrypted
+def decrypt(secret)
+alphabet = "abcdefghijklmnopqrstuvwxyz"
+	for i in 0...secret.length
+		num = alphabet.index(secret[i])
+		num -= 1
+		secret[i] = alphabet[num]
+	end
+return secret
+end
+
+puts "Would you like to encrypt or decrypt your password?"
+answer = gets.chomp
+puts "Please input your code."
+code = gets.chomp
+if answer == "encrypt"
+	puts encrypt(code)
+elsif answer == "decrypt"
+	puts decrypt(code)
+else
+	puts "Please answer \"encrypt\" or \"decrypt\""
+end

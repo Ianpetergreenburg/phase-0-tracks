@@ -31,3 +31,4 @@ for i in 1..employee
 		puts "Results inconclusive"
 	end
 end
+puts "Actually, never mind! What do these questions have to do with anything? Let's all be friends."

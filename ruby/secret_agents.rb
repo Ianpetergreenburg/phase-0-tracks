@@ -1,9 +1,3 @@
-Encrypt
-#take an argument to code
-#find out the length
-#traverse the length while moving one letter forward in alphabet
-#return the encrypted
-
 def encrypt(secret)
 password_length = secret.length - 1
 	for i in 0..password_length
@@ -18,9 +12,13 @@ password_length = secret.length - 1
 return secret
 end
 
-Decrypt
-#input alphabet
-#take an argument to decode
-#find out the length
-#traverse the length while moving one letter backward in alphabet
-#return the unencrypted
+def decrypt(secret)
+password_length = secret.length - 1
+alphabet = "abcdefghijklmnopqrstuvwxyz"
+	for i in 0..password_length
+		num = alphabet.index(secret[i])
+		num -= 1
+		secret[i] = alphabet[num]
+	end
+return secret
+end

@@ -8,7 +8,11 @@ def encrypt(secret)
 password_length = secret.length - 1
 	for i in 0..password_length
 		temp = secret[i]
-		temp = temp.next
+		if temp == "z"
+			temp = "a"
+		else
+			temp = temp.next
+		end
 		secret[i] = temp
 	end
 return secret

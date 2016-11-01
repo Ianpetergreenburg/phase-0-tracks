@@ -62,3 +62,30 @@ client_info[:number_children] = temp4
 puts "What would you like to be the main theme of the design?"
 client_info[:decor_theme] = gets.chomp
 puts client_info[:decor_theme] + "? That sounds positively lovely!"
+
+puts "Please list anything you don't want included in your design. (leave blank if there is nothing you don't want to include)"
+a6 = gets.chomp
+client_info[:dislikes] = a6
+until a6.to_s.empty?
+	puts "is there anything else you don't want included? (leave blank if there is nothing else)"
+	a6 = gets.chomp
+	if not a6.empty?
+		client_info[:dislikes] = client_info[:dislikes] + ", " + a6
+	end
+end
+
+puts "What is your planned budget for this job?"
+a7 = gets.chomp.delete '$'
+temp7 = a7.to_i
+until temp7 > 0 && a7 != "0"
+	if a7 == "0"
+		puts "Unfortunately we can't work with no budget. Please give us an amount greater than 0."
+	elsif temp7 < 0
+		puts "Negative budget? Try again."
+	else
+ 		 puts "Please write your answer with numbers"
+ 	end
+  	 a7 = gets.chomp.delete '$'
+  	 temp7 = a7.to_i
+end
+client_info[:goal_budget] = temp7

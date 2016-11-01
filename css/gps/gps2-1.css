@@ -1,3 +1,43 @@
-html {
-	background-color: goldenrod;
+body {
+    width: 980px;
+}
+h1, h2 {
+  font-family: arial;
+  text-shadow: 2px 2px white;
+}
+
+
+
+section {
+  border-radius: 5px;
+}
+
+header {
+  border: 2px solid pink;
+  background-color: lightblue;
+}
+
+section.column-1 {
+    border: 2px solid lightblue;
+    background-color: pink;
+    padding: 10px;
+    padding-bottom: 200px;
+    width: 40%;
+    margin-left: 70mm;
+    display: inline-block;
+    vertical-align: top;
+}
+
+section.column-2 {
+      border: 2px solid turquoise;
+    background-color: pink;
+    padding: 10px;
+    width: 25%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+footer {
+   border: 2px solid pink;
+  background-color: lightblue;  
 }

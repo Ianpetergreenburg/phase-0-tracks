@@ -40,7 +40,7 @@
 "The case of the disappearing first letter".replace("he case of the disappearing first letter")
 # => "he mystery of the missing first letter"
 
-"Elementary,    my   dear        Watson!".squeeze(" ")
+"Elementary,    my   dear        Watson!".squeeze!(" ")
 "Elementary,    my   dear        Watson!".replace("Elementary, my dear Watson!")
 # => "Elementary, my dear Watson!"
 

@@ -27,3 +27,7 @@ border. */
 section#contact-info p:last-of-type {
   border-right: none;
 }
+
+section#contact-info:hover {
+  font-size: 2em;
+}

@@ -1,0 +1,143 @@
+Robot’s Elevator How-To:
+
+-Determine current floor
+-Determine destination floor
+-If current is lower than destination 
+	-press up-arrow button
+-Else if current is higher than destination
+	-press down-arrow button
+-Otherwise
+	-Congratulations you are at the destination floor!
+-Wait until elevator arrives and opens doors
+-Wait until passengers are not actively disembarking the elevator
+-Enter elevator
+-If a person or another elevator robot that takes in voice commands is within two feet of the keypad
+	-ask “Could you please press” destination floor number
+	-If response is yes
+		-say “Thank you”
+		-go as far back into elevator as possible without touching anyone
+		-face elevator door
+		-avoid small talk (but respond “no” to requests to press the keypad 		for others)
+		-wait until destination floor is reached
+		-wait for doors to open 
+		-exit
+		-Congratulations you are at the destination floor!
+-Go to elevator keypad
+-starting at button number 1
+	-until button number matches destination number
+		-look at the next button number
+	-press button number
+-press “close door” button three times in quick succession
+-go as far back into elevator as possible without touching anyone
+-face elevator door
+-avoid small talk (but respond “no” to requests to press the keypad for others)
+-wait until destination floor is reached 
+-wait for doors to open
+-exit
+-Congratulations you are at the destination floor
+
+Robot’s Grocery Store Trip How-To:
+
+-Determine Grocery List
+-if Grocery List is empty
+	-Congratulations you did all the necessary shopping
+-set Preferred Grocery Store based on personal income/most attractive checkout clerks
+-Determine closest Preferred Grocery Store
+-Travel to closest PGS
+-Choose Grocery Receptacle
+	-if Grocery list is more than twenty items long or includes item larger then 
+2 cubic feet
+		-choose large cart
+	-else if Grocery list is between ten and twenty items
+		-choose small cart
+	-otherwise
+		-choose basket
+-Go to left most aisle
+-until at the right most aisle
+	-Start at top of Grocery List
+	-Until end of Grocery List
+		-If current item is in this aisle and not crossed out
+			-locate item
+			-determine nutrition content/price of each brand of item
+			-wait ten seconds and ponder options
+			-put cheapest brand of item in your receptacle
+			-cross out item
+		-look at next item
+	-go right one aisle
+-If not all items are crossed out
+	-pout
+-If item not on grocery list looks good and you’ve been good about your calories this week so you deserve a treat and you haven’t had it in a while
+	-put item in receptacle
+-locate cash registers 
+-if alcohol/cigarette’s/other age-restricted item is in cart
+	-get ID out
+-If self-service has no line
+	-go to self-service
+	-checkout all items in your receptacle
+	-swear when you realize you forgot to bring grocery bags to the store
+	-swear while shelling out five cents for each paper bag needed
+	-curse Seattle for this burden upon your finances	
+-else if # of items in receptacle is less than three items over express lane max limit
+	-wait in line until open space is made for you on conveyor belt
+	-place all items on belt at once/stack them if needed
+	-if # of items is larger than express lane limit
+		-avoid eye contact with clerk
+	-make small talk with clerk (you’re a cool client who brightens their day)
+	-pay for items
+	-if cash was used
+		-quickly shove bills into wallet
+		-fumble with coins. 
+		-drop a penny
+		-don’t pick it up
+	-else if card was used
+		-shove card into wallet in different location than normal
+	-else if check was used
+		-if you are over the age of 60
+			-Awwwww cute!
+		-else
+			-don’t use a check. you’re in the express lane for goodness’			sake
+	-Otherwise
+		-did you pay via venmo? no idea what you’re doing.
+-Otherwise
+	-determine line with shortest wait line
+	-Go to checkout stand with cutest clerk
+	-wait in line until open space is made for you on conveyor belt
+	-place all items on belt at once/stack them if needed
+	-if clerk makes eye contact
+		-be chill
+		-seriously don’t say anything weird
+		-say something weird
+		-cry silently inside and avoid further eye contact with clerk
+	-pay for items
+	-if cash was used
+		-quickly shove bills into wallet
+		-fumble with coins. 
+		-drop a penny
+		-don’t pick it up
+	-else if card was used
+		-shove card into wallet in different location than normal
+	-else if check was used
+		-if you are over the age of 60
+			-Awwwww cute!
+		-else
+			-don’t use a check.
+	-Otherwise
+		-did you pay via venmo? no idea what you’re doing.
+-if # of grocery bags is 3 or lower and you don’t have an item larger than 2 cubic feet
+	-leave receptacle where you retrieved receptacle
+	-take grocery’s home
+	-if no pout was made
+		-Congratulations you did all the necessary shopping
+-Otherwise
+	-if travelled to PGS in car
+		-bring receptacle to car filled with groceries
+		-transfer groceries to car
+		-place receptacle somewhere in parking lot, whatever.
+		-go home
+	-Otherwise
+		-call an uber or something? you didn’t plan ahead very well.
+		-wait for uber?
+		-put groceries in uber and go home?
+	-if no pout was made
+		-Congratulations you did all the necessary shopping
+-Whomp, whomp you didn’t complete your necessary shopping. 

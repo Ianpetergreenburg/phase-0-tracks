@@ -37,3 +37,11 @@ cell = {
 		}
 	}
 }
+
+p cell[:plant][:cell_membrane][:cell_wall][:composition]["Cellulose"]
+p cell[:animal][:cytoplasm][:endoplasmic_reticulum][1]
+cell[:animal][:cytoplasm].each {|x| p x}
+cell[:animal][:nucleus][:chromosomes] = "is DNA"
+cell[:plant][:nucleus][:chromosomes] = cell[:animal][:nucleus][:chromosomes]
+cell[:animal][:cytoplasm][:golgi].upcase!
+p cell

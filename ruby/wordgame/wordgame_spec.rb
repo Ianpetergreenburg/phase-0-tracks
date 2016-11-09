@@ -10,17 +10,23 @@
 #if game is won give a congratulatory message
 #if guess count hits 0 then give losing message
 
-require_relative = 'wordgame'
+require_relative 'wordgame'
 
 describe WordGame do
-   let(:wordgame) { WordGame.new("test") }
+   let(:wordgame) { WordGame.new("testtest") }
 
-   it "takes a guess and returns boolean of if in the word"
-
+   it "takes a guess and returns boolean of if it is in the word" do
+    isletter = "t"
+    isnotletter = "q"
+      expect(wordgame.guess(isletter)).to eq true
+      expect(wordgame.guess(isnotletter)).to eq false
   end
 
-  it "keeps track if the game is over"
+  it "keeps track if the game is over" do
       expect(wordgame.gameover?).to eq false
+      wordgame.
   end
+
+  it "creates a gameboard equal to length of gameword"
 end
 

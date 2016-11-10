@@ -38,17 +38,18 @@ class WordGame
 end
 
 def isletter?(letter)
-  alphabet = "abcdefghijklmnopqrstuvwxyz"
   if not letter.empty?
-    return (alphabet.include? letter[0]) && (letter.length == 1)
+    return (Alphabet.include? letter) && (letter.length == 1)
   else
     return false
   end
 end
 
 def isword?(word)
+  # if word == "" || word == nil
+  #   return false
+  # end
   word = word.downcase
-  alphabet = "abcdefghijklmnopqrstuvwxyz"
   word.length.times do |i|
     if not isletter?(word[i])
       return false

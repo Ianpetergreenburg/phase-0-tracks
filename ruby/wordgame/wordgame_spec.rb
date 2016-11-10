@@ -13,7 +13,7 @@
 require_relative 'wordgame'
 
 describe WordGame do
-   let(:wordgame) { WordGame.new("testtest") }
+   let(:wordgame) { WordGame.new("test") }
 
    it "takes a guess and returns boolean of if it is in the word" do
     isletter = "t"
@@ -24,9 +24,26 @@ describe WordGame do
 
   it "keeps track if the game is over" do
       expect(wordgame.gameover?).to eq false
-      wordgame.
   end
 
-  it "creates a gameboard equal to length of gameword"
+  it "creates a gameboard equal to length of gameword" do 
+      expect(wordgame.gameboard).to eq ["_","_","_","_"]
+  end
+
+it "checks if whatever is passed is a string of only letters" do
+  expect(isword?("cc")).to eq true
+  expect(isword?("Test")).to eq true
+  expect(isword?("Test4")).to eq false
+  expect(isword?("c c")).to eq false
+  expect(isword?("")).to eq false
+end
+
+  it "checks if whatever is passed is a single letter" do
+   expect(isletter?("c")).to eq true
+   expect(isletter?("bc")).to eq false
+   expect(isletter?(" ")).to eq false
+   expect(isletter?("4")).to eq false
+end
+
 end
 

@@ -16,14 +16,12 @@ describe WordGame do
    let(:wordgame) { WordGame.new("test") }
 
    it "takes a guess and returns boolean of if it is in the word" do
-    isletter = "t"
-    isnotletter = "q"
-      expect(wordgame.guess(isletter)).to eq true
-      expect(wordgame.guess(isnotletter)).to eq false
+      expect(wordgame.guess("t")).to eq true
+      expect(wordgame.guess("q")).to eq false
   end
 
-  it "keeps track if the game is over" do
-      expect(wordgame.gameover?).to eq false
+  it "keeps track if the game is won" do
+      expect(wordgame.gamewon?).to eq false
   end
 
   it "creates a gameboard equal to length of gameword" do 
@@ -43,6 +41,7 @@ end
    expect(isletter?("bc")).to eq false
    expect(isletter?(" ")).to eq false
    expect(isletter?("4")).to eq false
+   expect(isletter?("C")).to eq true
 end
 
 end

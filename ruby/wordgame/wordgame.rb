@@ -5,97 +5,89 @@ class WordGame
   attr_reader :word
 
   def initialize(word)
-  @word = word.downcase
+  @word = word
+  @wordarr = word.downcase.split('')
   @guesses = word.length + 2
   @gameboard = Array.new(word.length){|x| "_"}
   @guessed_letters = []
-  @gameover = false
+  @gamewon = false
   end
 
   def guess(letter)
-    correct = false
+  correct = false
   if @guessed_letters.include? letter
-      puts "please guess a letter you have not tried yet"
+      puts "please guess a letter you have not tried yet" 
   else
-      @guessed_letters << letter
-        if @word.include? letter
-            @word.length.times do |i| 
-                if @word[i] == letter
-                    @gameboard[i] = letter
-                    correct = true
+        @wordarr.each_index do |i| 
+               if @wordarr[i] == letter
+                       @gameboard[i] = letter
+                       correct = true
                 end
             end
-        end
+        @guessed_letters << letter
         @guesses -= 1
     end
-    return correct
+  return correct
   end
 
-  def gameover?
-     @gameover = (@gameboard.join == @word)
+  def gamewon?
+     @gamewon = (@gameboard.join == @word)
   end
 
 end
 
 def isletter?(letter)
-  if not letter.empty?
-    return (Alphabet.include? letter) && (letter.length == 1)
-  else
-    return false
-  end
+    return (Alphabet.include? letter.downcase) && (letter.length == 1)
 end
 
 def isword?(word)
-  # if word == "" || word == nil
-  #   return false
-  # end
   word = word.downcase
-  word.length.times do |i|
-    if not isletter?(word[i])
-      return false
-    end
-  end
-  return true
+  word.each_char { |c| return false if not isletter?(c) }
+  return !word.empty?
 end
 
 #end
 #begins with asking the first user a word to play with
 puts "player1, please enter the word you would like your partner to guess"
 #that word is then accepted and a blank form of the word is created
-gameword = gets.chomp.downcase
+gameword = gets.chomp
 
 until isword?(gameword)
   puts "please only use letters in your word"
-  gameword = gets.chomp.downcase
+  gameword = gets.chomp
 end
 
 game = WordGame.new(gameword)
-#generate an appropriate amount of guesses dependent on the amount of letters in the word
-until game.guesses == 0 || game.gameover?
-#accept a guess letter
-    puts "player2, you have " + game.guesses.to_s + " guesses left."
-    current_guess = gets.chomp.downcase
 
-    until isletter?(current_guess)
-      puts "please only guess with a single letter"
-      current_guess = gets.chomp.downcase
-    end
+while game.guesses > 0
+  puts "Player2, you still have " + game.guesses.to_s + " guesses left."
+  current_guess = gets
+  break if current_guess == nil
+  current_guess = current_guess.chomp
 
-    game.guess(current_guess)
+  while !isletter?(current_guess)
+        puts "please only guess with a single letter"
+        current_guess = gets
+        break if current_guess == nil
+        current_guess = current_guess.chomp
+ end
 
-    puts "your gameboard currently looks like"
-    puts game.gameboard.join(' ').dump
+ game.guess(current_guess)
 
-    if game.gameover?
-      puts "Congratulations on guessing the correct word, " + game.word
-      break
-    end
+ puts "your gameboard now currently looks like"
+ puts game.gameboard.join(' ').dump
 
+  if game.gamewon?
+        puts "Congratulations on guessing the correct word, " + game.word
+        break
+  end
 end
 
-if not game.gameover?
+if not game.gamewon?
   puts "Turns out the word was " + game.word + ", you silly goose. Womp womp."
 end
+
+#generate an appropriate amount of guesses dependent on the amount of letters in the word
 #make sure it hasn't been guessed before
 #if it hasn't check if it is in the word
 #if it is then reveal the letter in the blank form

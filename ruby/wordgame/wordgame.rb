@@ -1,16 +1,17 @@
+#pseudocode was broken up and 
+
 class WordGame
   Alphabet = "abcdefghijklmnopqrstuvwxyz"
-  attr_reader :guesses, :gameboard, :gamewon
+  attr_reader :guesses, :gameboard, :game_won
   attr_accessor :word
 
   def initialize(word)
-    #cast word to 
   @word = word.downcase
-  @wordarr = word.downcase.split('')
+  @word_arr = word.downcase.split('')
   @guesses = word.length + 5
   @gameboard = Array.new(word.length){"_"}
   @guessed_letters = []
-  @gamewon = false
+  @game_won = false
   end
 
   #Take in a letter  and return how many times it is in the game word
@@ -19,8 +20,8 @@ class WordGame
         letter = letter.downcase
         num = 0
         #iterate through word comparing guessed letter to letter's in the word
-        @wordarr.each_index do |i| 
-               if @wordarr[i] == letter
+        @word_arr.each_index do |i| 
+               if @word_arr[i] == letter
                       #if the letter matches update the game board in the equivalent spot
                        @gameboard[i] = letter
                        num += 1
@@ -33,25 +34,25 @@ class WordGame
   end
 
 #Determine if game is won by all letters being guess or whole word guessed
-  def gamewon? (guess = "")
-        @gamewon = (@gameboard == @wordarr || @word == guess)
+  def game_won? (guess = "")
+        @game_won = (@gameboard == @word_arr || @word == guess)
   end
 
 #determine if input is a letter by it's length and if it's in the Alphabet string
- def isletter?(letter)
+ def is_letter?(letter)
         (Alphabet.include? letter.downcase) && (letter.length == 1)
  end
 
 #determine if word by iterating through string and seeing if each character is a letter
 #return true if the word is made of only letters and isn't an empty string
- def isword?(word)
+ def is_word?(word)
         word = word.downcase
-        word.each_char { |c| return false if not isletter?(c) }
+        word.each_char { |c| return false if not is_letter?(c) }
         !word.empty?
  end
 
 #determine whether or not a given letter has already been gueseed by checking guess database
- def alreadyguessed? (letter)
+ def already_guessed? (letter)
         letter = letter.downcase
         @guessed_letters.include? letter
  end
@@ -70,7 +71,7 @@ puts "#{player1}, please enter the word you would like your partner to guess"
 gameword = gets.chomp
 game = WordGame.new(gameword)
 #loop until users input is a string of only letters/not empty 
-until game.isword?(game.word)
+until game.is_word?(game.word)
   puts "please only use letters in your word"
   gameword = gets.chomp
   game  = WordGame.new(gameword)
@@ -94,9 +95,9 @@ while game.guesses > 0
 #gather a guess from the user
 #make them guess again if they didn't guess a letter or the letter as been guessed already
   current_guess = gets.chomp
-  while !game.isletter?(current_guess) || game.alreadyguessed?(current_guess)
-        puts "Please guess only with a single letter" if !game.isletter?(current_guess)
-        puts "Please guess a letter you have not tried yet." if game.alreadyguessed?(current_guess)
+  while !game.is_letter?(current_guess) || game.already_guessed?(current_guess)
+        puts "Please guess only with a single letter" if !game.is_letter?(current_guess)
+        puts "Please guess a letter you have not tried yet." if game.already_guessed?(current_guess)
         current_guess = gets.chomp
  end
 
@@ -114,7 +115,7 @@ correct = revealed > 0
  puts game.gameboard.join(' ').dump
 
 #check if the last guess won the game and congratulate the user if so and end the game
- if game.gamewon?
+ if game.game_won?
         puts "Congratulations on guessing the correct word, #{game.word}"
         break
  end
@@ -136,7 +137,7 @@ correct = revealed > 0
                puts "Please enter what you think the final word might be"
                guess = gets.chomp.downcase
                #congratulate the user if they were right
-               if game.gamewon? (guess)
+               if game.game_won? (guess)
                        puts "Congratulations on guessing the correct word, #{game.word}"
                end
                #end the guesses
@@ -148,6 +149,6 @@ correct = revealed > 0
 end
 
 #if the user didn't win taunt them
-if not game.gamewon
+if not game.game_won
   puts "Turns out the word was #{game.word}, you silly goose. Womp womp."
 end

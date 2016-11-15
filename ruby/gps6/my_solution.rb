@@ -28,6 +28,17 @@ class VirusPredictor
  #determines amount of people who may day and prints out the result
   def predicted_deaths
       # predicted deaths is solely based on population density
+      number_of_deaths=0
+      density=[200,150,100,50,0]
+      death_percentage=[0.4, 0.3, 0.2, 0.1, 0.05]
+
+      density.each_index do |index|
+        if @population_density  >= density[index]
+            number_of_deaths = (@population * death_percentage[index]).floor
+          break
+        end
+      end
+=begin
     if @population_density >= 200
       number_of_deaths = (@population * 0.4).floor
     elsif @population_density >= 150
@@ -39,7 +50,7 @@ class VirusPredictor
     else
       number_of_deaths = (@population * 0.05).floor
     end
-
+=end
     print "#{@state} will lose #{number_of_deaths} people in this outbreak"
 
   end
@@ -49,7 +60,17 @@ class VirusPredictor
     # We are still perfecting our formula here. The speed is also affected
     # by additional factors we haven't added into this functionality.
     speed = 0.0
+    speed_array=[0.5, 1, 1.5, 2, 2.5]
+    density_array=[200,150,100,50,0]
 
+    speed_array.each_index do |index|
+        if @population_density  >= density_array[index]
+            speed += speed_array[index]
+          break
+        end
+      end
+
+=begin
     if @population_density >= 200
       speed += 0.5
     elsif @population_density >= 150
@@ -61,6 +82,7 @@ class VirusPredictor
     else
       speed += 2.5
     end
+=end
 
     puts " and will spread across the state in #{speed} months.\n\n"
 
@@ -93,3 +115,14 @@ end
 
 #=======================================================================
 # Reflection Section
+# What are the differences between the two different hash syntaxes shown in the state_data file?
+# One hash is a symbol pointing to data and the other is a string pointing to a hash
+# What does require_relative do? How is it different from require?
+# loads a file relative to the location of the  program file
+# allows access to code in required file
+# What are some ways to iterate through a hash?
+# .each, .each_key, .each_value
+# When refactoring virus_effects, what stood out to you about the variables, if anything?
+# The variables themselves did not stand out
+# What concept did you most solidify in this challenge?
+# I guess accessing data from hashes

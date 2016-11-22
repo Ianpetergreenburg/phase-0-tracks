@@ -1,0 +1,93 @@
+1.--------------------------------------------------------------
+SELECT * FROM magic;
+1|Lumos|Provides light from wand.|false|3|2
+2|Crucio|Inflicts intense pain.|true|4|3
+3|Langlock|Glues targets tongue to the roof of their mouth.|false|6|4
+4|Waddiwasi|Launches small objects|false|3|2
+5|Aguamenti|Shoots water form tip of wand.|false|3|1
+6|Veratiserum|Forces drinker to speak the truth.|false|4|5
+7|Polyjuice Potion|Allows drinker to take on the image of another.|false|2|5
+8|Confringo|Creates a large blast.|false|3|3
+
+2.------------------------------------------------------------- 
+UPDATE magic SET forbidden = "true" WHERE type_id = 3;
+
+1|Lumos|Provides light from wand.|false|3|2
+2|Crucio|Inflicts intense pain.|true|4|3
+3|Langlock|Glues targets tongue to the roof of their mouth.|false|6|4
+4|Waddiwasi|Launches small objects|false|3|2
+5|Aguamenti|Shoots water form tip of wand.|false|3|1
+6|Veratiserum|Forces drinker to speak the truth.|false|4|5
+7|Polyjuice Potion|Allows drinker to take on the image of another.|false|2|5
+8|Confringo|Creates a large blast.|true|3|3
+3.-------------------------------------------------------------
+SELECT * FROM magic, type WHERE magic.type_id = type.id;
+
+1|Lumos|Provides light from wand.|false|3|2|2|charm
+2|Crucio|Inflicts intense pain.|true|4|3|3|curse
+3|Langlock|Glues targets tongue to the roof of their mouth.|false|6|4|4|jinx
+4|Waddiwasi|Launches small objects|false|3|2|2|charm
+5|Aguamenti|Shoots water form tip of wand.|false|3|1|1|transfiguration
+6|Veratiserum|Forces drinker to speak the truth.|false|4|5|5|potion
+7|Polyjuice Potion|Allows drinker to take on the image of another.|false|2|5|5|potion
+8|Confringo|Creates a large blast.|true|3|3|3|curse
+
+4.-------------------------------------------------------------
+SELECT magic.name, type.type FROM magic JOIN type ON magic.type_id = type.id;
+
+Lumos|charm
+Crucio|curse
+Langlock|jinx
+Waddiwasi|charm
+Aguamenti|transfiguration
+Veratiserum|potion
+Polyjuice Potion|potion
+Confringo|curse
+
+5.-------------------------------------------------------------
+DELETE FROM magic WHERE name = "Crucio";
+
+1|Lumos|Provides light from wand.|false|3|2
+3|Langlock|Glues targets tongue to the roof of their mouth.|false|6|4
+4|Waddiwasi|Launches small objects|false|3|2
+5|Aguamenti|Shoots water form tip of wand.|false|3|1
+6|Veratiserum|Forces drinker to speak the truth.|false|4|5
+7|Polyjuice Potion|Allows drinker to take on the image of another.|false|2|5
+8|Confringo|Creates a large blast.|true|3|3
+--------------------------------------------
+RELEASE 2
+INNER JOIN -- includes info only where magic.type_id = type.id
+SELECT magic.name, magic.effect, type.type FROM magic INNER JOIN type ON magic.type_id = type.id
+   ...> ;
+Lumos|Provides light from wand.|charm
+Langlock|Glues targets tongue to the roof of their mouth.|jinx
+Waddiwasi|Launches small objects|charm
+Aguamenti|Shoots water form tip of wand.|transfiguration
+Veratiserum|Forces drinker to speak the truth.|potion
+Polyjuice Potion|Allows drinker to take on the image of another.|potion
+Confringo|Creates a large blast.|curse
+
+LEFT JOIN -- includes all info from first table and info from second where magic.type_id = type.id
+INSERT INTO magic (name, effect, forbidden, first_book)
+   ...> VALUES("Crucio", "Inflicts intense pain.", "true", 4);
+
+1|Lumos|Provides light from wand.|false|3|2
+3|Langlock|Glues targets tongue to the roof of their mouth.|false|6|4
+4|Waddiwasi|Launches small objects|false|3|2
+5|Aguamenti|Shoots water form tip of wand.|false|3|1
+6|Veratiserum|Forces drinker to speak the truth.|false|4|5
+7|Polyjuice Potion|Allows drinker to take on the image of another.|false|2|5
+8|Confringo|Creates a large blast.|true|3|3
+9|Crucio|Inflicts intense pain.|true|4|
+
+Lumos|2|charm
+Langlock|4|jinx
+Waddiwasi|2|charm
+Aguamenti|1|transfiguration
+Veratiserum|5|potion
+Polyjuice Potion|5|potion
+Confringo|3|curse
+Crucio||      <==== still shows up despite missing a type_id
+
+RIGHT JOIN
+Error: RIGHT and FULL OUTER JOINs are not currently supported -- not in SQLite 3

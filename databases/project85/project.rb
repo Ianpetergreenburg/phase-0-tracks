@@ -4,20 +4,30 @@ require "sqlite3"
 db = SQLite3::Database.new("project.db")
 db.results_as_hash = true
 
-def create_table_cmd(db, table)
- create_table_cmd = <<-SQL
-          CREATE TABLE IF NOT EXISTS #{table}(
-               id INTEGER PRIMARY KEY,
-               project VARCHAR(255),
-               version VARCHAR(255)
-          );
- SQL
- db.execute(create_table_cmd)
+def create_table(db, table)
+ if get_tables(db).include?(table)
+        puts "#{table} already exists."
+ else
+         create_table_cmd = <<-SQL
+                CREATE TABLE IF NOT EXISTS #{table}(
+                       id INTEGER PRIMARY KEY,
+                       project VARCHAR(255),
+                       version VARCHAR(255)
+                  );
+SQL
+         db.execute(create_table_cmd)
+         puts "the table #{table} has been created."
+ end
 end
 
-def delete_table_cmd(db, table)
- delete_table_cmd =  "DROP TABLE IF EXISTS #{table}"
- db.execute(delete_table_cmd)
+def delete_table(db, table)
+  if get_tables(db).include?(table)
+        delete_table_cmd =  "DROP TABLE IF EXISTS #{table}"
+        db.execute(delete_table_cmd)
+        puts "#{table} was deleted"
+  else
+        puts "That table does not exist."
+   end
 end
 
 def create_line_item(db, project, version)
@@ -54,18 +64,17 @@ SQL
 end
 
 
-
-get_tables(db)
+create_table(db, "b")
 print_tables(db)
-# puts "delete a table?"
-# table = gets.chomp
-# delete_table_cmd(db, table)
+create_table(db, "b")
+puts "delete a table?"
+table = gets.chomp
+delete_table(db, "b")
+print_tables(db)
+delete_table(db, "b")
 
 
-
-# 10.times do
-#   create_line_item(db, Faker::App.name, Faker::App.version)
-# end
+# get_tables(db)
 
 #delete_line_item(db,"project",2)
 #create_line_item(db, Faker::App.name, Faker::App.version
@@ -73,4 +82,7 @@ print_tables(db)
 # projects = db.execute("SELECT * FROM project")
 # projects.each do |project|
 #   puts "Project \##{project["id"]} is called #{project["project"]} and is currently on version #{project["version"]}"
+# end
+# 10.times do
+#   create_line_item(db, Faker::App.name, Faker::App.version)
 # end

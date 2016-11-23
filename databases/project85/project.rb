@@ -33,6 +33,8 @@ end
 #   create_line_item(db, Faker::App.name, Faker::App.version)
 # end
 
+delete_line_item(db,project,2)
+
 projects = db.execute("SELECT * FROM project")
 projects.each do |project|
   puts "Project \##{project["id"]} is called #{project["project"]} and is currently on version #{project["version"]}"

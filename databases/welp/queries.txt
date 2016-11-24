@@ -1,0 +1,29 @@
+2.--------------------------------------------------------
+SELECT * FROM reviews JOIN businesses, users 
+ON reviews.user_id = users.id AND reviews.business_id = businesses.id;
+
+1|4|She really cleaned my pipes|5|4|5|Plumbing by Janet|4|Katie|Gloor
+2|2|Had a flat tire and they scratched my rim. Really grinds my gears.|2|2|2|Amir's Towing|2|Ryan|Austin
+3|5|Made me feel like a very relaxed pretzel.|4|1|4|Lotus Yoga|1|Ian|Greenburg
+4|5|Howlingly good service.|3|3|3|The Beagle Nightclub|3|Doobie|Aunt
+5|1|The name sqpeaks for itself. Eerily decorated.|1|5|1|Grundy Hollow Wedding Chapel|5|John|Meadows
+
+
+
+3.---------------------------------------------------------
+SELECT businesses.name, users.first_name, users.last_name, reviews.stars, 
+reviews.comment FROM reviews JOIN businesses, users 
+ON reviews.business_id = businesses.id AND reviews.user_id = users.id;
+
+Plumbing by Janet|Katie|Gloor|4|She really cleaned my pipes
+Amir's Towing|Ryan|Austin|2|Had a flat tire and they scratched my rim. Really grinds my gears.
+Lotus Yoga|Ian|Greenburg|5|Made me feel like a very relaxed pretzel.
+The Beagle Nightclub|Doobie|Aunt|5|Howlingly good service.
+Grundy Hollow Wedding Chapel|John|Meadows|1|The name sqpeaks for itself. Eerily decorated.
+
+4.----------------------------------------------------------------
+SELECT businesses.name, users.first_name, users.last_name, reviews.stars, reviews.comment FROM businesses 
+JOIN users, reviews ON reviews.user_id = users.id AND reviews.business_id = businesses.id 
+WHERE businesses.id = 3;
+
+The Beagle Nightclub|Doobie|Aunt|5|Howlingly good service.

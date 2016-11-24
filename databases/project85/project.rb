@@ -71,7 +71,7 @@ puts "delete a table?"
 table = gets.chomp
 delete_table(db, "b")
 print_tables(db)
-delete_table(db, "b")
+delete_table_cmd(db, "b")
 
 
 # get_tables(db)

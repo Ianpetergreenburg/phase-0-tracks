@@ -63,17 +63,24 @@ SQL
    end
 end
 
+def print_column_names
+    columns = db.execute<<PRAGMA table_info(table_name);
+          print columns
+    end
+end
 
-create_table(db, "b")
-print_tables(db)
-create_table(db, "b")
-puts "delete a table?"
-table = gets.chomp
-delete_table(db, "b")
-print_tables(db)
-delete_table_cmd(db, "b")
+project2.print_column_names
 
 
+
+# create_table(db, "b")
+# print_tables(db)
+# create_table(db, "b")
+# puts "delete a table?"
+# table = gets.chomp
+# delete_table(db, "b")
+# print_tables(db)
+# delete_table_cmd(db, "b")
 # get_tables(db)
 
 #delete_line_item(db,"project",2)

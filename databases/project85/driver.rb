@@ -1,38 +1,47 @@
 require_relative'project_class'
 
-project2 = Project.new("project2")
+def get_response
+  response = ''
+  until response == 'yes' || response == 'no'
+         puts "please answer yes or no."
+         response = gets.chomp
+  end
+  response
+end
 
-# table = "b"
-#  project2.create_table(table)
-#project2.print_tables
-#project2.print_column_names('d')
-# # project2.create_table("b")
-# # puts "delete a table?"
-# # table = gets.chomp
- #project2.delete_table("e")
-# # project2.print_tables
-# project2.delete_table("i")
-# project2.print_tables
-# project2.print_column_names("b")
-# p project2.get_column_names("c")
-# project2.create_table('d')
-# project2.print_column_names("d")
-# project2.references('b')
-# project2.get_tables.each do |table|
-#         p table
-#         p project2.get_column_names(table)
-#   end
-# project2.create_table('e')
-# project2.references('b')
- # p project2.get_column_names('b')
-# p project2.get_data_types('i')
-# project2.print_tables
-#p project2.get_valid_id('b')
-#p project2.delete_line_item('b')
-# project2.print_table('c')
-# project2.print_table('d')
-# project2.print_table('g')
-# project2.print_table('f')
-# project2.print_table_names
- p project2.create_line_item('d')
-project2.print_table('d')
+def valid_database_name (name)
+        /^\w+$/.match (name)
+end
+
+databases = []
+database_chosen = false
+Dir.entries(".").each{|file| databases << file.split(".db").join if /.db$/.match(file)}
+puts "These databases are currently in your directory"
+if !databases.empty?
+        databases.each{|db| puts db} 
+        puts "would you like to work on one of the existing databases?"
+        if get_response == 'yes'
+                while true
+                       puts "please choose one of the listed database(s). #{databases}"
+                       database = gets.chomp 
+                       if databases.include? database
+                              database_chosen = true
+                              break 
+                       end
+                end
+          end
+else
+        puts "Your directory currently has no databases"
+end
+unless database_chosen
+        while true 
+                puts "Please the enter the name of the new directory you would like to create:"
+                database = gets.chomp
+                break if valid_database_name(database)
+                puts "Please only use letters, numbers or '_' in your name"
+        end
+end
+project = Project.new("#{database}")
+
+#project.print_join
+project.print_table('b')

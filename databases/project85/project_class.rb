@@ -86,11 +86,11 @@ end
 
 def get_tables
   table_names = []
-  tables = @db.execute <<SQL
+  tables = @db.execute <<-SQL
          SELECT name FROM sqlite_master
          WHERE type='table'
          ORDER BY name;
-SQL
+         SQL
   tables.each do |row| 
         table_names << row["name"]
  end
@@ -109,15 +109,7 @@ def print_table(table)
                 names = get_column_names(table)
                 puts names.join("|")
                 table_info = @db.execute("SELECT * FROM #{table}")
-                table_info.each do |line|
-                       line_info = []
-                       line.each do |name, value|
-                               if names.include?(name)
-                                        line_info << value
-                               end
-                       end
-                       puts line_info.join("|")
-                end
+                print_execute(table_info)
          end
 end
 
@@ -133,7 +125,6 @@ end
         end
  end
 
-
 def get_column_names(table_name)
   column_names = get_info(table_name, 'name')
 end
@@ -144,7 +135,40 @@ def get_data_types(table_name)
   data_types
 end
 
+def print_join
+        to_join = []
+        puts "choose 2 of these tables to join"
+        print_table_names
+        until to_join.length == 2 #&& answer == 'exit'
+                puts "what is your first table you would like to join?" if to_join.length == 0
+                puts "what is your second table you would like to join?" if to_join.length == 1
+               answer = gets.chomp
+               to_join << answer if table_exists?(answer)
+        end
+        if references(to_join[1]).include?(to_join[0])
+               print_execute(@db.execute("SELECT * FROM #{to_join[0]} JOIN #{to_join[1]}
+ON #{to_join[0]}.#{to_join[1]}_id = #{to_join[1]}.id ;"))
+        elsif references(to_join[0]).include?(to_join[1])
+                print_execute(@db.execute("SELECT * FROM #{to_join[1]} JOIN #{to_join[0]}
+ON #{to_join[1]}.#{to_join[0]}_id = #{to_join[0]}.id ;"))
+        else
+                puts "Those two tables are incompatible and cannot be joined"
+       end
+end
+
 #private
+
+def print_execute(execute)
+ execute.each do |line|
+        line_info = []
+        line.each do |name, value|
+               if name.is_a? String
+                       line_info << value
+                end
+        end
+        puts line_info.join("|")
+     end
+end
 
 def table_exists? (table_name)
         if !get_tables.include? (table_name)
@@ -164,15 +188,18 @@ def get_info(table_name, type)
 end
 
 def add_column(create_table_cmd)
- data_types = ['numbers','letters','true/false']
-         puts"what would you like the value in this column to be called?"
-         column_name = gets.chomp
-         puts "What type of data would you like stored? #{data_types}"
-         data_type = gets.chomp
-         until data_types.include? data_type
-                 puts "please choose one of the three listed data types. #{data_types}"
+         while true 
+                puts"what would you like the value in this column to be called?"
+                column_name = gets.chomp
+                break if valid_name(column_name)
+                puts "Please only use letters, numbers or '_' in your name"
+        end
+             while true 
+                puts"What type of data would you like stored? #{data_types}"
                 data_type = gets.chomp
-          end
+                break if valid_data_type(data_type)
+                puts "please choose one of the three listed data types. #{data_types}"
+        end
           variable = 'VARCHAR(255)' if data_type == data_types[0]
           variable = 'INT' if data_type == data_types[1]
           variable = 'BOOLEAN' if data_type == data_types[2]
@@ -214,7 +241,7 @@ def references(current_table)
         tables.each do |table|
                 columns = get_column_names(table)
                 columns.each do |column|
-                       if column.include?('_id')
+                       if /[_id]$/.match(column)
                               references << table if column.split('_id').join == current_table
                        end
                 end
@@ -279,7 +306,7 @@ def get_ids(table)
         valid_ids
 end
 
-def get_valid_id(table)
+ def get_valid_id(table)
           answer = gets.chomp
           ids = get_ids(table)
           until is_number?(answer) && ids.include?(answer.to_i)
@@ -291,5 +318,26 @@ def get_valid_id(table)
                 answer = gets.chomp
         end
         answer
-end     
+ end     
+
+def get_valid_name
+        while true 
+                puts"what would you like the value in this column to be called?"
+                name = gets.chomp
+                break if valid_name(name)
+                puts "Please only use letters, numbers or '_' in your name"
+        end
+end
+
+ def valid_name (name)
+        /^\w+$/.match (name)
+ end
+
+def get_valid_data_type
+
+end
+
+ def valid_data_type(data_type)
+        data_types = ['numbers','letters','true/false']
+        data_types.include? data_type
 end

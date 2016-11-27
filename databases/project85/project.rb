@@ -21,12 +21,10 @@ SQL
 end
 
 def delete_table(db, table)
-  if get_tables(db).include?(table)
+  if table_exists?(table)
         delete_table_cmd =  "DROP TABLE IF EXISTS #{table}"
         db.execute(delete_table_cmd)
         puts "#{table} was deleted"
-  else
-        puts "That table does not exist."
    end
 end
 

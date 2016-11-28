@@ -8,6 +8,8 @@ class Project
         @db.results_as_hash = true
  end
 
+#creates a table in the given database
+#adds columns and foreign keys based on user input
  def create_table(table)
         if get_tables.include?(table)
                 puts "#{table} already exists."
@@ -31,6 +33,8 @@ class Project
         end
  end
 
+#deletes a table based on user input from UI
+#won't delete if referenced by another table
  def delete_table(table)
         referenced_by = references(table)
         if !referenced_by.empty?
@@ -45,18 +49,18 @@ class Project
         end
  end
 
+#creates a line in a table given by the UI
+#all values are given by the user
+#if foreign key, match id to the necessary table
  def create_line_item(table)
         values = []
         if table_exists?(table)
                columns = get_column_names(table)[1..-1]
                insert = Array.new(columns).fill('?').join(", ")
                get_data_types(table).each_with_index do |type, i|
-                       p type
                        prefix = nil
                        prefix = columns[i].split('_id').join if /[_id]$/.match(columns[i])
                        if !get_tables.include? prefix
-                              p "test"
-                              p 
                               values << get_number(columns[i]) if type == 'INTEGER' || type == 'INT'
                               values << get_string(columns[i]) if type == 'VARCHAR(255)'
                               values << get_boolean(columns[i]) if type == 'BOOLEAN'
@@ -81,6 +85,7 @@ class Project
         end
  end
 
+#deletes line from given table based on that line's id
 def delete_line_item(table)
         if table_exists?(table)
                 print_table(table)
@@ -91,6 +96,7 @@ def delete_line_item(table)
         end
  end
 
+#returns an array filled with tables of the database
  def get_tables
         table_names = []
         tables = @db.execute <<-SQL
@@ -104,6 +110,7 @@ def delete_line_item(table)
          table_names
  end
 
+#prints names of all tables in database
  def print_table_names
         get_tables.each do |name| 
                print  "#{name} "
@@ -111,6 +118,7 @@ def delete_line_item(table)
         puts ""
  end
 
+#prints all the info in the current table
  def print_table(table)
         if table_exists?(table)
                 names = get_column_names(table)
@@ -120,6 +128,7 @@ def delete_line_item(table)
          end
  end
 
+#prints names of all of the columns of a user given table
  def print_column_names(table_name)
         if table_exists?(table_name)
                 puts "Your table \"#{table_name}\" has columns named:"
@@ -132,16 +141,20 @@ def delete_line_item(table)
         end
  end
 
+#returns an array of all column names of a given table
  def get_column_names(table_name)
         column_names = get_info(table_name, 'name')
  end
 
+#returns an array of all data types of columns of a given table not including the id key
  def get_data_types(table_name) 
         data_types = get_info(table_name, 'type')
         data_types.shift
         data_types
  end
 
+#prints joined version of 2 tables chosen by user
+#prints error message if tables don't reference each other
  def print_join
         if get_tables.size < 2
                   puts "you do not have enough tables to join"
@@ -171,8 +184,9 @@ def delete_line_item(table)
        end
  end
 
-                                                                                        
+ private                                                                                       
 
+#submethod that parses sql data to print only the values
  def print_execute(execute)
         execute.each do |line|
                 line_info = []
@@ -185,6 +199,7 @@ def delete_line_item(table)
         end
  end
 
+#submethod that parses sql data to print only the column names 
  def print_execute_titles(execute)
         execute.each do |line|
                 titles = []
@@ -196,7 +211,8 @@ def delete_line_item(table)
                puts titles.join("|")
         end
 end
-private
+
+#submethod to determine if a given table currently exists
  def table_exists? (table_name)
         if !get_tables.include? (table_name)
                puts "the current database doesn't include a table called \"#{table_name}\""
@@ -205,7 +221,8 @@ private
         true
  end
 
-def get_info(table_name, type)
+#submethod that parses sql data to return array of data of a given type
+ def get_info(table_name, type)
         info = []
         if table_exists?(table_name)
                table_info = @db.execute("PRAGMA table_info(#{table_name});")
@@ -214,6 +231,9 @@ def get_info(table_name, type)
         info
  end
 
+#submethod to add a column to a new table
+#name and datatype of the column are determined by user input
+#returns sql text that would add the column
  def add_column(create_table_cmd)
         puts"what would you like the value in this column to be called?"
         column_name = get_valid_name
@@ -225,7 +245,11 @@ def get_info(table_name, type)
         create_table_cmd += ",  #{column_name}  #{variable}"
  end
 
-
+#submethod to add reference(s) to other tables
+#shows users other tables that can be referenced 
+#gives option to create a table if user wants to reference a non-existent one
+#determines which reference to add based on user input
+#returns sql text that would add the reference(s)
  def add_foreign_keys(create_table_cmd, current_table)
         foreign_keys = []
         puts "you currently have #{get_tables.length} other table(s)"
@@ -259,6 +283,7 @@ def get_info(table_name, type)
         create_table_cmd
  end
 
+#returns an array of all other tables that reference the given table
  def references(current_table)
         references = []
         tables = get_tables
@@ -273,6 +298,8 @@ def get_info(table_name, type)
         references
  end
 
+#prompts the user for a yes or no and won't accept any other answer
+#returns the yes or no
  def get_response
         response = ''
         until response == 'yes' || response == 'no'
@@ -282,6 +309,9 @@ def get_info(table_name, type)
         response
  end
 
+#prompts the user for an int and won't accept any other answer
+#references the name of the column the number is for
+#returns an int
  def get_number(value_name)
         puts "please input a value for #{value_name} (numbers)"
         while true
@@ -292,10 +322,15 @@ def get_info(table_name, type)
          answer.to_i
  end
 
+#determines if a string is a number value
+#returns boolean
  def is_number?(answer)
         answer.to_i != 0 || answer == '0'
  end
 
+#prompts the user for an string and won't accept a blank answer
+#references the name of the column the string is for
+#returns a string
  def get_string(value_name)
         puts "please input a value for #{value_name} (letters)"
         answer = gets.chomp
@@ -306,6 +341,9 @@ def get_info(table_name, type)
         answer
  end
 
+#prompts the user for a boolean and won't accept any other answer
+#references the name of the column the boolean is for
+#returns a boolean
  def get_boolean(value_name)
         puts "please input a value for #{value_name} (true/false)"
         answer = gets.chomp
@@ -316,6 +354,7 @@ def get_info(table_name, type)
         answer
  end
 
+#returns an array of all ids from a given table
  def get_ids(table)
         valid_ids = []
          table_info = @db.execute("SELECT * FROM #{table}")
@@ -330,6 +369,8 @@ def get_info(table_name, type)
         valid_ids
  end
 
+#prompts user for a value that is a valid id
+#returns that id
  def get_valid_id(table)
         answer = gets.chomp
         ids = get_ids(table)
@@ -344,6 +385,8 @@ def get_info(table_name, type)
         answer
  end     
 
+#prompts user for a string that can be used as a name and won't accept anything else
+#returns that name
  def get_valid_name
         while true 
                 name = gets.chomp
@@ -353,10 +396,13 @@ def get_info(table_name, type)
         name
  end
 
+#determines if a string is a valid name
  def valid_name (name)
         /^\w+$/.match (name)
  end
 
+#prompts user for a string that can be used as a data type and won't accept anything else
+#returns that data type
  def get_valid_data_type
         while true 
                 data_type = gets.chomp

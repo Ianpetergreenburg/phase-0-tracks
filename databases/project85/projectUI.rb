@@ -1,7 +1,7 @@
 require_relative'project_class'
 $project = Project.new("my_first_database")
 
-
+#introduces user and prompts them to choose a database
 def start
         puts "Welcome to the Database Manager!"
         puts "Please choose the database you'd like to work on first."
@@ -9,6 +9,11 @@ def start
         choose_database
 end
 
+#prompts the user to choose a database from the local directory
+#prints all existing databases
+#user can either choose an existing database or create a new one
+# if there are no databases, user will automatically have to create a new one
+#once a database is chosen user goes to the menu for that database
 def choose_database
         databases = []
         database_chosen = false
@@ -40,6 +45,9 @@ def choose_database
         menu
 end
 
+#prompts user to do something with their database
+#either complete the command the user wants or exits the program
+#if there are no existing tables in the database user is automatically prompted to make one
 def menu
         menu_items = ["create new table", "access table", "print joined tables","access different database","exit" ]
         menu_methods = ["create_new_table","choose_table", "print_joined","choose_database", "exit"]
@@ -55,6 +63,7 @@ def menu
         send(menu_methods[menu_choice.to_i - 1])
 end
 
+#creates a new table in the database
 def create_new_table
         puts "Please enter the name of the table you'd like to create"
         table_name = get_valid_name
@@ -62,6 +71,8 @@ def create_new_table
         menu
 end
 
+#prompts user to choose an existing table
+#moves the user to the menu for that table
 def choose_table
         tables = $project.get_tables
         puts "These are you current tables:"
@@ -76,6 +87,11 @@ def choose_table
         access_table(tables[table_choice - 1])
 end
 
+#prompts user to do something with their table
+#if simple, complete the command and return to the table menu
+#if add or delete loop the command as prompted to add many items at once
+#make sure the user actually want to delete a table if that command is selected, if so return to main menu afterwards
+#choose table shouldn't return to menu after completed
 def access_table(table)
         menu_items = ["print table", "print column names", "add item to table", "delete item from table", "delete table", "access a different table", "return to menu"]
         puts "You are now accessing table \'#{table}\'"
@@ -109,16 +125,21 @@ def access_table(table)
         menu unless menu_choice != 7
 end
 
+#prints joined version of two tables
 def print_joined
         $project.print_join
         menu
 end
 
+#exits the program
+#bids the user farewell
 def exit
         5.times{puts ''}
         puts "Thanks for using Database Manager!"
 end
 
+#submethod to get user input to choose an option from a menu array
+#returns int indicating their choice
 def menu_chooser(menu_items)
         puts "\n please input the number of the option you'd like to perform"
         menu_items.each_with_index{|item, index| puts "#{index + 1}. #{item}"}
@@ -130,6 +151,8 @@ def menu_chooser(menu_items)
         menu_choice.to_i
 end
 
+#submethod to get yes or no answer from user
+#returns yes or no 
 def get_response
   response = ''
   until response == 'yes' || response == 'no'
@@ -139,10 +162,14 @@ def get_response
   response
 end
 
+#submethod to determine if a string is valid for a name
+#returns boolean
 def valid_name (name)
         /^\w+$/.match (name)
 end
 
+#submethod to get a string from a user that is a valid name
+#returns a valid name
 def get_valid_name
         while true 
                name = gets.chomp
@@ -152,6 +179,8 @@ def get_valid_name
         name    
 end
 
+#submethod to determine if a string is a number
+#returns boolean
  def is_number?(answer)
         answer.to_i != 0 || answer == '0'
  end

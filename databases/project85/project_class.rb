@@ -36,10 +36,12 @@ class Project
         if !referenced_by.empty?
                puts "unable to delete table \'#{table}\' because it is referenced by table(s):"
                referenced_by.each{|table_name| puts "#{table_name}"}
+               false
         elsif table_exists?(table)
                delete_table_cmd =  "DROP TABLE IF EXISTS #{table}"
                @db.execute(delete_table_cmd)
                puts "#{table} was deleted"
+               true
         end
  end
 
@@ -60,7 +62,9 @@ class Project
                               puts "would you like to see that table now?"
                               print_table(prefix) if get_response == 'yes'
                               puts "would you like to reference one of the available lines?"
-                              if get_response == 'no'
+                              response = get_response
+                              if response == 'no' || get_ids(prefix).empty?
+                                     puts "That table has no lines to reference. We'll have to make a new one." if response == 'yes'
                                      puts "Alright! We will now create a new line for you to reference"
                                      create_line_item(prefix)
                                      values << get_ids(prefix)[-1]

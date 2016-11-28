@@ -1,5 +1,5 @@
 require_relative'project_class'
-$project = nil
+$project = Project.new("test_database")
 
 def get_response
   response = ''
@@ -59,6 +59,7 @@ end
 
 def menu
         menu_items = ["create new table", "access table", "print joined tables","access different database","exit" ]
+        menu_methods = ["create_new_table","choose_table", "print_joined","choose_database", "exit"]
         tables = $project.get_tables
         has_tables = !tables.empty?
         if !has_tables
@@ -67,20 +68,83 @@ def menu
                 table_name = get_valid_name
                 $project.create_table(table_name)
         end
-        puts = "\n please input the number of the option you'd like to perform"
-        menu_items.each_with_index{|item, index| puts "#{index + 1}. #{item}"}
+        menu_choice = menu_chooser(menu_items)
+        send(menu_methods[menu_choice.to_i - 1])
+end
+
+def create_new_table
+        puts "Please enter the name of the table you'd like to create"
+        table_name = get_valid_name
+        $project.create_table(table_name)
+        menu
+end
+
+def choose_table
+        tables = $project.get_tables
+        puts "These are you current tables:"
+        $project.print_table_names
+        puts "which table would you like to access"
+        tables.each_with_index{|item, index| puts "#{index + 1}. #{item}"}
         while true
-               menu_choice = gets.chomp
-               break if is_number?(menu_choice) && menu_choice.to_i.between(1,menu_items.length)
-               puts "Please input the number of the menu item you'd like to access"
+               table_choice = gets.chomp.to_i
+               break if  table_choice.between?(1,tables.length)
+               puts "Please input the number of the table you'd like to access"
         end
-        menu_methods = ["create_new_table","access_table", "print_joined","choose_database", "exit"]
-        send(menu_methods[menu_choice - 1])
+        access_table(tables[table_choice - 1])
+end
+
+def access_table(table)
+        menu_items = ["print table", "print column names", "add item to table", "delete item from table", "delete table", "access a different table", "return to menu"]
+        puts "You are now accessing table \'#{table}\'"
+        puts "Choose what you would like to do with this table"
+        menu_choice = menu_chooser(menu_items)
+        simple_items = [1,2,6]
+        if simple_items.include? menu_choice
+                $project.print_table(table) if menu_choice == 1
+                $project.print_column_names(table) if menu_choice == 2
+                choose_table if menu_choice == 6
+        elsif  menu_choice == 3
+                while true
+                        $project.create_line_item(table)
+                        puts "would you like to add another line?"
+                        break if get_response == 'no'
+                end
+        elsif menu_choice == 4
+               while true
+                        $project.delete_line_item(table)
+                        puts "would you like to delete another line?"
+                        break if get_response == 'no'
+                end
+        elsif menu_choice == 5
+                        puts "are you sure that you would like to delete this table?"
+                        if get_response == 'yes'
+                              $project.delete_table(table)
+                              menu_choice = 7
+                        end
+        end
+        access_table(table) unless menu_choice == 7
+        menu unless menu_choice != 7
+end
+
+def print_joined
+        $project.print_join
+        menu
 end
 
 def exit
-        5.times(puts '')
+        5.times{puts ''}
         puts "Thanks for using Database Manager!"
 end
 
-choose_database
+def menu_chooser(menu_items)
+        puts "\n please input the number of the option you'd like to perform"
+        menu_items.each_with_index{|item, index| puts "#{index + 1}. #{item}"}
+        while true
+               menu_choice = gets.chomp
+               break if is_number?(menu_choice) && menu_choice.to_i.between?(1,menu_items.length)
+               puts "Please input the number of the menu item you'd like to access"
+        end
+        menu_choice.to_i
+end
+
+menu

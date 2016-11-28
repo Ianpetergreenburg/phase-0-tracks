@@ -1,4 +1,5 @@
 require "sqlite3"
+DATA_TYPES = ['numbers','letters','true/false']
 
 class Project
 
@@ -135,6 +136,10 @@ def delete_line_item(table)
  end
 
  def print_join
+        if get_tables.size < 2
+                  puts "you do not have enough tables to join"
+                  return nil
+        end
         to_join = []
         puts "choose 2 of these tables to join"
         print_table_names
@@ -155,7 +160,7 @@ def delete_line_item(table)
        end
  end
 
-#private
+                                                                                        private
 
  def print_execute(execute)
         execute.each do |line|
@@ -189,6 +194,7 @@ def get_info(table_name, type)
  def add_column(create_table_cmd)
         puts"what would you like the value in this column to be called?"
         column_name = get_valid_name
+        puts "what type of data would you like stored in this column #{DATA_TYPES}"
         data_type = get_valid_data_type
         variable = 'VARCHAR(255)' if data_type == 'letters'
         variable = 'INT' if data_type == 'numbers'
@@ -331,15 +337,10 @@ def get_info(table_name, type)
  def get_valid_data_type
         while true 
                 data_type = gets.chomp
-                break if valid_data_type(data_type)
-                puts "please choose one of the three listed data types. #{data_types}"
+                break if DATA_TYPES.include? data_type
+                puts "please choose one of the three listed data types. #{DATA_TYPES}"
         end
         data_type
- end
-
- def valid_data_type(data_type)
-        data_types = ['numbers','letters','true/false']
-        data_types.include? data_type
  end
 
 end

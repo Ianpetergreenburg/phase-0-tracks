@@ -1,31 +1,12 @@
 require_relative'project_class'
-$project = Project.new("test_database")
+$project = Project.new("my_first_database")
 
-def get_response
-  response = ''
-  until response == 'yes' || response == 'no'
-         puts "please answer yes or no."
-         response = gets.chomp
-  end
-  response
+
+def start
+        puts "Welcome to the Database Manager!"
+        puts "Please choose the database you'd like to work on first."
+        choose_database
 end
-
-def valid_name (name)
-        /^\w+$/.match (name)
-end
-
-def get_valid_name
-        while true 
-               name = gets.chomp
-               break if valid_name(name)
-               puts "Please only use letters, numbers or '_' in your name"
-        end 
-        name    
-end
-
- def is_number?(answer)
-        answer.to_i != 0 || answer == '0'
- end
 
 def choose_database
         databases = []
@@ -36,15 +17,16 @@ def choose_database
                 databases.each{|db| puts "-----     #{db}"} 
                 puts "would you like to work on one of the existing databases?"
                 if get_response == 'yes'
-                        while true
-                               puts "please choose one of the listed database(s). #{databases}"
-                               database = gets.chomp 
-                               if databases.include? database
-                                      database_chosen = true
-                                      break 
-                               end
-                        end
-                  end
+                       puts "please choose one of the listed database(s)."
+                       while true
+                              databases.each_with_index{|item, index| puts "#{index + 1}. #{item}"}
+                              db_choice = gets.chomp.to_i
+                              database = databases[db_choice - 1]
+                              break if  db_choice.between?(1,databases.length)
+                              puts "Please input the number of the database you'd like to access"
+                       end
+                       database_chosen = true
+               end
         else
                 puts "-----Your directory currently has no databases!"
         end
@@ -106,13 +88,13 @@ def access_table(table)
         elsif  menu_choice == 3
                 while true
                         $project.create_line_item(table)
-                        puts "would you like to add another line?"
+                        puts "would you like to add another line to  \'#{table}\'?"
                         break if get_response == 'no'
                 end
         elsif menu_choice == 4
                while true
                         $project.delete_line_item(table)
-                        puts "would you like to delete another line?"
+                        puts "would you like to delete another line from \'#{table}\'?"
                         break if get_response == 'no'
                 end
         elsif menu_choice == 5
@@ -122,7 +104,7 @@ def access_table(table)
                               menu_choice = 7
                         end
         end
-        access_table(table) unless menu_choice == 7
+        access_table(table) unless menu_choice > 5
         menu unless menu_choice != 7
 end
 
@@ -147,4 +129,30 @@ def menu_chooser(menu_items)
         menu_choice.to_i
 end
 
-menu
+def get_response
+  response = ''
+  until response == 'yes' || response == 'no'
+         puts "please answer yes or no."
+         response = gets.chomp
+  end
+  response
+end
+
+def valid_name (name)
+        /^\w+$/.match (name)
+end
+
+def get_valid_name
+        while true 
+               name = gets.chomp
+               break if valid_name(name)
+               puts "Please only use letters, numbers or '_' in your name"
+        end 
+        name    
+end
+
+ def is_number?(answer)
+        answer.to_i != 0 || answer == '0'
+ end
+
+start

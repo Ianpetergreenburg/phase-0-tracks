@@ -51,10 +51,13 @@ class Project
                columns = get_column_names(table)[1..-1]
                insert = Array.new(columns).fill('?').join(", ")
                get_data_types(table).each_with_index do |type, i|
+                       p type
                        prefix = nil
                        prefix = columns[i].split('_id').join if /[_id]$/.match(columns[i])
                        if !get_tables.include? prefix
-                              values << get_int(columns[i]) if type == 'INTEGER'
+                              p "test"
+                              p 
+                              values << get_number(columns[i]) if type == 'INTEGER' || type == 'INT'
                               values << get_string(columns[i]) if type == 'VARCHAR(255)'
                               values << get_boolean(columns[i]) if type == 'BOOLEAN'
                        else
@@ -147,24 +150,28 @@ def delete_line_item(table)
         to_join = []
         puts "choose 2 of these tables to join"
         print_table_names
-        until to_join.length == 2 #&& answer == 'exit'
+        until to_join.length == 2
                 puts "what is your first table you would like to join?" if to_join.length == 0
                 puts "what is your second table you would like to join?" if to_join.length == 1
                answer = gets.chomp
                to_join << answer if table_exists?(answer)
         end
         if references(to_join[1]).include?(to_join[0])
-               print_execute(@db.execute("SELECT * FROM #{to_join[0]} JOIN #{to_join[1]}
-                       ON #{to_join[0]}.#{to_join[1]}_id = #{to_join[1]}.id ;"))
+               execute = @db.execute("SELECT * FROM #{to_join[0]} JOIN #{to_join[1]}
+                       ON #{to_join[0]}.#{to_join[1]}_id = #{to_join[1]}.id ;")
+               print_execute_titles(execute)
+               print_execute(execute)
         elsif references(to_join[0]).include?(to_join[1])
-                print_execute(@db.execute("SELECT * FROM #{to_join[1]} JOIN #{to_join[0]}
-                       ON #{to_join[1]}.#{to_join[0]}_id = #{to_join[0]}.id ;"))
+                execute = @db.execute("SELECT * FROM #{to_join[1]} JOIN #{to_join[0]}
+                       ON #{to_join[1]}.#{to_join[0]}_id = #{to_join[0]}.id ;")
+                print_execute_titles(execute)
+                print_execute(execute)
         else
                 puts "Those two tables are incompatible and cannot be joined"
        end
  end
 
-                                                                                        private
+                                                                                        
 
  def print_execute(execute)
         execute.each do |line|
@@ -178,6 +185,18 @@ def delete_line_item(table)
         end
  end
 
+ def print_execute_titles(execute)
+        execute.each do |line|
+                titles = []
+                line.each do |name, value|
+                       if name.is_a? String
+                              titles << name
+                       end
+               end
+               puts titles.join("|")
+        end
+end
+private
  def table_exists? (table_name)
         if !get_tables.include? (table_name)
                puts "the current database doesn't include a table called \"#{table_name}\""

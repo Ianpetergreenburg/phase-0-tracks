@@ -117,8 +117,7 @@ def access_table(table)
         elsif menu_choice == 5
                         puts "are you sure that you would like to delete this table?"
                         if get_response == 'yes'
-                              $project.delete_table(table)
-                              menu_choice = 7
+                              menu_choice = 7 if $project.delete_table(table)
                         end
         end
         access_table(table) unless menu_choice > 5

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Student Locations</title>
+</head>
+<body>  
+<% locations = [] %>
+<% @students.each do |student| %>
+          <% locations << student["campus"] if !locations.include? student["campus"] %>
+<% end  %>
+<ol>
+<% locations.each do |location| %>
+        <li><%= location %></li>
+                <ul>
+                <% @students.each do |student| %>
+                      <% if student["campus"] == location %> 
+                            <li><%= student["name"] %> <%= student["age"] %> </li> 
+                        <% end %>
+                  <% end %>
+                  </ul>
+<% end %>
+</ol>
+
+<p> Click <a href="/">here</a> to return home </p>
+</body>
+</html>
